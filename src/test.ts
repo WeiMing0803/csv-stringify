@@ -5,9 +5,9 @@ function generateCsv(delimiter: string, quoteValues: boolean): Promise<void> {
     return new Promise((resolve, reject) => {
         const header = ['Name', 'Age', 'City'];
         const records = [
-            ['John', 28, 'New York'],
-            ['Jane', 32, 'London'],
-            ['Peter', 22, 'Berlin']
+            ['John', 28, new Date('2025-03-01 00:06:29.683')],
+            ['Jane', 32, new Date('2025-03-01 00:06:29.683').toString()],
+            ['Peter', 22, '2025-03-01 00:06:29.683']
         ];
 
         // 配置选项
@@ -15,7 +15,10 @@ function generateCsv(delimiter: string, quoteValues: boolean): Promise<void> {
             delimiter: delimiter,          // 自定义分隔符
             quoted: quoteValues,          // 是否全局加引号
             header: true,                 // 包含标题行
-            columns: header               // 定义表头
+            columns: header,               // 定义表头
+            cast: {  //自动将 Date 格式化为 YYYY-MM-DD HH:mm:ss.SSS 而不是时间戳。
+                date: (value: { toISOString: () => string; }) => value.toISOString().replace('T', ' ').replace('Z', '')
+              }
         };
 
         // 使用 stringify 生成 CSV 内容
