@@ -16,9 +16,9 @@ function generateCsv(delimiter: string, quoteValues: boolean): Promise<void> {
             quoted: quoteValues,          // 是否全局加引号
             header: true,                 // 包含标题行
             columns: header,               // 定义表头
-            cast: {  //自动将 Date 格式化为 YYYY-MM-DD HH:mm:ss.SSS 而不是时间戳。
-                date: (value: { toISOString: () => string; }) => value.toISOString().replace('T', ' ').replace('Z', '')
-              }
+            cast: {  //自动将 Date 格式化为 YYYY-MM-DDTHH:mm:ss.SSSZ 而不是时间戳。
+                date: (value: { toISOString: () => string; }) => value.toISOString(),
+            }
         };
 
         // 使用 stringify 生成 CSV 内容
